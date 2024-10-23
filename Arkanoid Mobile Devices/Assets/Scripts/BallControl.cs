@@ -5,23 +5,31 @@ using UnityEngine;
 public class BallControl : MonoBehaviour
 {
     [SerializeField] private Vector2 initialVelocity;
+    [SerializeField] private float velocityMultiplier;
 
     private Rigidbody2D ballRb;
-    private bool isBallMoving;
-    
+
     void Start()
     {
-        ballRb = GetComponent<Rigidbody2D>();
+        ballRb = GetComponent<Rigidbody2D>(); 
+
+        StartCoroutine(StartBallMovement());
+    }
+
+    IEnumerator StartBallMovement()
+    {
+        yield return new WaitForSeconds(2);
+
+        ballRb.velocity = initialVelocity;
        
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!isBallMoving)
+            if(collision.gameObject.CompareTag("Block"))
         {
-            ballRb.velocity = initialVelocity;
-            isBallMoving = true;
+            Destroy(collision.gameObject);
+            ballRb.velocity *= velocityMultiplier;
         }
     }
 }
