@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private int blockCount;
+    public int blockCount;
     public static GameManager Instance {  get; private set; }
     private void Awake()
     {
@@ -25,14 +25,14 @@ public class GameManager : MonoBehaviour
     {
         blockCount = GameObject.FindGameObjectsWithTag("Block").Length;
     }
-    public void BlockDestroyed()
+    /*public void BlockDestroyed()
     {
         blockCount--;
         if(blockCount <= 0)
         {
             LoadNextLevel();
         }
-    }
+    }*/
 
     private void LoadNextLevel()
     {

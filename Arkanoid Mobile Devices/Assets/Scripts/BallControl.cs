@@ -28,8 +28,21 @@ public class BallControl : MonoBehaviour
     {
             if(collision.gameObject.CompareTag("Block"))
         {
-            Destroy(collision.gameObject);
+            
             ballRb.velocity *= velocityMultiplier;
+           // GameManager.Instance.BlockDestroyed();
+        }
+    }
+
+    private void VelocityFix()
+    {
+        float velocityDelta = 0.5f;
+        float minVelocity = 0.2f;
+
+        if (Mathf.Abs(ballRb.velocity.x) < minVelocity)
+        {
+            velocityDelta = Random.value < 0.5f ? velocityDelta : -velocityDelta;
+            ballRb.velocity += new Vector2(0f, velocityDelta);
         }
     }
 }
