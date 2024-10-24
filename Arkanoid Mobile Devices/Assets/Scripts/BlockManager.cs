@@ -1,38 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BlockManager : MonoBehaviour
 {
-    // Number of hits required to destroy the block
-    private int hitsRemaining = 3;
+    
 
-    // Colors to change the block to after each hit (assign these in the Inspector)
     [SerializeField] private Color hit1Color;
     [SerializeField] private Color hit2Color;
-
+    [SerializeField] private int hitsRemaining = 3;
+    public GameManager scoreManager;
     // Reference to the SpriteRenderer component
     private SpriteRenderer spriteRenderer;
 
+
     void Start()
     {
-        // Get the SpriteRenderer component to change the color
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // Check if the SpriteRenderer is correctly assigned
-        if (spriteRenderer == null)
+        if (scoreManager == null)
         {
-            Debug.LogError("SpriteRenderer is missing!");
+            scoreManager = FindObjectOfType<GameManager>();  // Automatically finds ScoreManager if not assigned
         }
-    }
-
-    // This method is called when the block is hit
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Decrease the hit count
-        hitsRemaining--;
-
-        // Change the color based on the number of hits remaining
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        
         if (hitsRemaining == 2)
         {
             spriteRenderer.color = hit1Color;  // First hit color change
@@ -41,9 +31,29 @@ public class BlockManager : MonoBehaviour
         {
             spriteRenderer.color = hit2Color;  // Second hit color change
         }
+        
+    }
+
+    // This method is called when the block is hit
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Decrease the hit count
+        hitsRemaining--;
+
+        if (hitsRemaining == 2)
+        {
+            scoreManager.AddHitScore();          
+            spriteRenderer.color = hit1Color;  // First hit color change
+        }
+        else if (hitsRemaining == 1)
+        {
+            scoreManager.AddHitScore();
+
+            spriteRenderer.color = hit2Color;  // Second hit color change
+        }
         else if (hitsRemaining <= 0)
         {
-            // Destroy the block when it reaches 0 hits
+            scoreManager.AddDestroyScore();
             Destroy(gameObject);
         }
     }
