@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         currentLives--;
         UpdateLivesUI();
 
-        if(currentLives <= 0)
+        if(currentLives <= 1)
         {
             GameOver();
         }
@@ -54,8 +54,8 @@ public class GameManager : MonoBehaviour
         livesText.text = "Lives: " + currentLives.ToString();
     }
 
-    private void GameOver()
-    {
+    public void GameOver()
+    {        
         Debug.Log("Game Over");
     }
 

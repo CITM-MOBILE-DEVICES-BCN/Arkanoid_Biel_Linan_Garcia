@@ -73,8 +73,8 @@ public class BallControl : MonoBehaviour
             }
             else
             {
-                // If no lives are left, handle game over (ball destruction or stop game logic)
-                Destroy(collision.gameObject);  // Optionally destroy the ball
+                Destroy(gameObject);
+                gameManager.GameOver();  
             }
 
         }
