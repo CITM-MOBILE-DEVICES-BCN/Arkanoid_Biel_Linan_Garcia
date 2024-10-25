@@ -76,16 +76,16 @@ public class GameManager : MonoBehaviour
     {
         scoreText.text = "Score: " + score.ToString();
     }
-    /*public void BlockDestroyed()
+    public void BlockDestroyed()
     {
         blockCount--;
         if(blockCount <= 0)
         {
             LoadNextLevel();
         }
-    }*/
+    }
 
-    private void LoadNextLevel()
+    public void LoadNextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
