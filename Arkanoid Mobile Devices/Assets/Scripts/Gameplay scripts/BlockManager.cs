@@ -10,18 +10,13 @@ public class BlockManager : MonoBehaviour
     [SerializeField] private Color hit1Color;
     [SerializeField] private Color hit2Color;
     [SerializeField] private int hitsRemaining = 3;
-    public GameManager scoreManager;
+    
     // Reference to the SpriteRenderer component
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
 
 
     void Start()
     {
-        if (scoreManager == null)
-        {
-            scoreManager = FindObjectOfType<GameManager>();  // Automatically finds ScoreManager if not assigned
-        }
-        spriteRenderer = GetComponent<SpriteRenderer>();
         
         if (hitsRemaining == 2)
         {
@@ -42,18 +37,17 @@ public class BlockManager : MonoBehaviour
 
         if (hitsRemaining == 2)
         {
-            scoreManager.AddHitScore();          
+            GameManager.Instance.AddHitScore();          
             spriteRenderer.color = hit1Color;  // First hit color change
         }
         else if (hitsRemaining == 1)
         {
-            scoreManager.AddHitScore();
-
+            GameManager.Instance.AddHitScore();
             spriteRenderer.color = hit2Color;  // Second hit color change
         }
         else if (hitsRemaining <= 0)
         {
-            scoreManager.BlockDestroyed();
+            GameManager.Instance.BlockDestroyed();
             Destroy(gameObject);
         }
     }

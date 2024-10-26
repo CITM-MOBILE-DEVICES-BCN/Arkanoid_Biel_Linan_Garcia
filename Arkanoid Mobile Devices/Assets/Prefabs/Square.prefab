@@ -106,7 +106,7 @@ MonoBehaviour:
   hit1Color: {r: 1, g: 0.92989856, b: 0.042452812, a: 1}
   hit2Color: {r: 1, g: 0, b: 0.03997326, a: 1}
   hitsRemaining: 3
-  scoreManager: {fileID: 0}
+  spriteRenderer: {fileID: 5705994097550183532}
 --- !u!61 &799230407744210416
 BoxCollider2D:
   m_ObjectHideFlags: 0

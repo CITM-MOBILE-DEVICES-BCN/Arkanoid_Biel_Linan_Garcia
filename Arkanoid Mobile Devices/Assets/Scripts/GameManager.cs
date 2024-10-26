@@ -10,17 +10,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float checkDelay = 0.5f;
     [SerializeField] private string blockTag = "Block";
     public static int scoreValue = 0;
-    public TextMeshProUGUI scoreText;
-
+    public SaveandLoad saveLoad;
+    public SceneController sceneController;
+    public UImanager uiManager;
     
-    private int score = 0;
+    public int score = 0;
 
     public int totalLives = 3;
     public int currentLives;
-    public TextMeshProUGUI livesText;
-    public static GameManager Instance {  get; private set; }
+    public static GameManager Instance;
     private void Awake()
     {
+        saveLoad = new SaveandLoad();
         //singleton
         if (Instance != null && Instance != this)
         {
@@ -29,52 +30,39 @@ public class GameManager : MonoBehaviour
         else
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject); 
+            
         }
     }
 
+   public void continueButton()
+    {
+        saveLoad.Load();
+    }
     
+
+
     void Start()
     {
         currentLives = totalLives;
-        UpdateScoreUI();
-        UpdateLivesUI();
+        uiManager.UpdateScoreUI();
+        uiManager.UpdateLivesUI();
         StartCoroutine(CheckForBlocks());
 
 
     }
 
-    void Update()
-    {
-        // Check if we're currently in Level 2
-        if (SceneManager.GetActiveScene().name == "Level2")
-        {
-            // Find all objects tagged as "Block"
-            GameObject[] blocks = GameObject.FindGameObjectsWithTag("Block");
-
-            // If there are no blocks left, load Level 1
-            if (blocks.Length == 0)
-            {
-                SceneManager.LoadScene("Level1");
-            }
-        }
-
-    }
-
-        public void LoseLife()
+    public void LoseLife()
     {
         currentLives--;
-        UpdateLivesUI();
-
+        uiManager.UpdateLivesUI();  
         if(currentLives == 0)
         {
             GameOver();
         }
     }
 
-    private void UpdateLivesUI()
-    {
-        livesText.text = "Lives: " + currentLives.ToString();
-    }
+    
 
     public void GameOver()
     {        
@@ -85,20 +73,17 @@ public class GameManager : MonoBehaviour
     public void AddHitScore()
     {
         score += 50;
-        UpdateScoreUI();
+        uiManager.UpdateScoreUI();
     }
 
    
 
     // Updates the score display in the UI
-    private void UpdateScoreUI()
-    {
-        scoreText.text = "Score: " + score;
-    }
+    
     public void BlockDestroyed()
     {
         score += 100;  
-        UpdateScoreUI();
+        uiManager.UpdateScoreUI();
         Debug.Log("block destroy");
       
     }
@@ -113,23 +98,18 @@ public class GameManager : MonoBehaviour
             GameObject[] blocks = GameObject.FindGameObjectsWithTag(blockTag);
 
             // If no blocks are found, load the next scene
-            if (blocks.Length == 0)
+            if (blocks.Length == 0 && SceneManager.GetActiveScene().name == "Level1" || SceneManager.GetActiveScene().name == "Level2")
             {
-                LoadNextLevel();
+                sceneController.loadNextlvl();
                 
             }
         }
     }
     
     
-    public void LoadNextLevel()
-    {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+    
 
-        int nextSceneIndex = (currentSceneIndex + 1) % SceneManager.sceneCountInBuildSettings;
 
-        // Load the next scene
-        SceneManager.LoadScene(nextSceneIndex);
-    }
+   
 
 }

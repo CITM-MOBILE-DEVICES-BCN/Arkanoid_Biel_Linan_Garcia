@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        
+
         if (Input.GetKeyDown(KeyCode.B))
         {
             isFollowing = !isFollowing; 
