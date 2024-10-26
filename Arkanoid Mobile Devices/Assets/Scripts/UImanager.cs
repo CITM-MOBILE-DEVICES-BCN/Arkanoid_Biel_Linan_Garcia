@@ -10,6 +10,7 @@ public class UImanager : MonoBehaviour
     
     public TMP_Text livesText;
     public TMP_Text scoreText;
+    public TMP_Text highscore;
 
 
     public void Start()
@@ -26,5 +27,13 @@ public class UImanager : MonoBehaviour
     public void UpdateScoreUI()
     {
         scoreText.text = "Score: " + GameManager.Instance.score.ToString();
+    }
+
+    public void UpdareHighScore()
+    {
+        
+        highscore.text = "Highscore: " + GameManager.Instance.highscore.ToString();
+
+        PlayerPrefs.SetInt("Highscore", GameManager.Instance.highscore);
     }
 }

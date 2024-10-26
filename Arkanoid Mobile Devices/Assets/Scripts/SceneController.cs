@@ -105,7 +105,7 @@ public class SceneController : MonoBehaviour
 
     public void loadNewlvl()
     {
-
+        GameManager.Instance.highscore = PlayerPrefs.GetInt("Highscore");
         SceneManager.LoadScene("Level1");
 
     }

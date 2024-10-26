@@ -7,13 +7,14 @@ using TMPro;
 using System.Data;
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private float checkDelay = 0.5f;
+    [SerializeField] private float checkDelay = 1.5f;
     [SerializeField] private string blockTag = "Block";
     public static int scoreValue = 0;
     public SaveandLoad saveLoad;
     public SceneController sceneController;
     public UImanager uiManager;
-    
+    public int highscore;
+
     public int score = 0;
 
     public int totalLives = 3;
@@ -37,7 +38,9 @@ public class GameManager : MonoBehaviour
 
    public void continueButton()
     {
+       highscore = PlayerPrefs.GetInt("Highscore");
         saveLoad.Load();
+
     }
     
 
@@ -45,8 +48,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         currentLives = totalLives;
-        uiManager.UpdateScoreUI();
-        uiManager.UpdateLivesUI();
         StartCoroutine(CheckForBlocks());
 
 
@@ -74,6 +75,13 @@ public class GameManager : MonoBehaviour
     {
         score += 50;
         uiManager.UpdateScoreUI();
+
+        if(score > highscore)
+        {
+            highscore = score;
+            uiManager.UpdareHighScore();
+
+        }
     }
 
    
@@ -85,7 +93,14 @@ public class GameManager : MonoBehaviour
         score += 100;  
         uiManager.UpdateScoreUI();
         Debug.Log("block destroy");
-      
+        if (score > highscore)
+        {
+            highscore = score;
+            uiManager.UpdareHighScore();
+
+        }
+
+
     }
 
     private IEnumerator CheckForBlocks()
@@ -98,8 +113,9 @@ public class GameManager : MonoBehaviour
             GameObject[] blocks = GameObject.FindGameObjectsWithTag(blockTag);
 
             // If no blocks are found, load the next scene
-            if (blocks.Length == 0 && SceneManager.GetActiveScene().name == "Level1" || SceneManager.GetActiveScene().name == "Level2")
+            if (blocks.Length == 0 && SceneManager.GetActiveScene().name == "Level1" || blocks.Length == 0 && SceneManager.GetActiveScene().name == "Level2")
             {
+                Debug.Log("wasaa");
                 sceneController.loadNextlvl();
                 
             }

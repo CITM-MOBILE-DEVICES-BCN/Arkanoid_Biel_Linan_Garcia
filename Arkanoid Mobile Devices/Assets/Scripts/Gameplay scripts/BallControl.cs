@@ -11,7 +11,7 @@ public class BallControl : MonoBehaviour
     public float horizontalForce = 10f;
     public GameManager gameManager;
     public Transform ballSpawnPoint;
-
+    public AudioSource audioPlayer;
     private Rigidbody2D ballRb;
 
     void Start()
@@ -42,6 +42,8 @@ public class BallControl : MonoBehaviour
             
             ballRb.velocity *= velocityMultiplier;
            // GameManager.Instance.BlockDestroyed();
+
+            
         }
 
         if (collision.gameObject.CompareTag("Platform"))
@@ -60,8 +62,9 @@ public class BallControl : MonoBehaviour
             Vector2 ballVelocity = ballRigidbody.velocity;
             ballVelocity.x = normalizedHitPosition * horizontalForce;  // Adjust horizontal velocity
             ballRigidbody.velocity = ballVelocity;
-
             
+            
+
         }
 
         if (collision.gameObject.CompareTag("OutofBounds"))
@@ -78,6 +81,8 @@ public class BallControl : MonoBehaviour
             }
 
         }
+
+        audioPlayer.Play();
     }
 
     private void VelocityFix()

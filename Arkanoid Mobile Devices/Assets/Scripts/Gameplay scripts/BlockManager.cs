@@ -14,6 +14,9 @@ public class BlockManager : MonoBehaviour
     // Reference to the SpriteRenderer component
     public SpriteRenderer spriteRenderer;
 
+     
+   
+
 
     void Start()
     {
@@ -49,6 +52,7 @@ public class BlockManager : MonoBehaviour
         {
             GameManager.Instance.BlockDestroyed();
             Destroy(gameObject);
+            
         }
     }
 }

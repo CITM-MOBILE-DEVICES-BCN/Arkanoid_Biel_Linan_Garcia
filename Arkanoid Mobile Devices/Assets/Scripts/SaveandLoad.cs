@@ -11,6 +11,7 @@ public class SaveandLoad
         PlayerPrefs.SetInt("score", GameManager.Instance.score);
         PlayerPrefs.SetInt("lifes", GameManager.Instance.currentLives);
         PlayerPrefs.SetString("scene", sceneindex);
+        
 
         PlayerPrefs.Save();
     }
