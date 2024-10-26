@@ -8,6 +8,7 @@ TagManager:
   - Platform
   - OutofBounds
   - ball
+  - ScoreText
   layers:
   - Default
   - TransparentFX

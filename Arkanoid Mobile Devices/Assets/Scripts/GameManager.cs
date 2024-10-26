@@ -7,10 +7,12 @@ using TMPro;
 using System.Data;
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private float checkDelay = 0.5f;
+    [SerializeField] private string blockTag = "Block";
     public static int scoreValue = 0;
     public TextMeshProUGUI scoreText;
 
-    public int blockCount;
+    
     private int score = 0;
 
     public int totalLives = 3;
@@ -34,16 +36,36 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         currentLives = totalLives;
+        UpdateScoreUI();
         UpdateLivesUI();
-        blockCount = GameObject.FindGameObjectsWithTag("Block").Length;
+        StartCoroutine(CheckForBlocks());
+
+
     }
 
-    public void LoseLife()
+    void Update()
+    {
+        // Check if we're currently in Level 2
+        if (SceneManager.GetActiveScene().name == "Level2")
+        {
+            // Find all objects tagged as "Block"
+            GameObject[] blocks = GameObject.FindGameObjectsWithTag("Block");
+
+            // If there are no blocks left, load Level 1
+            if (blocks.Length == 0)
+            {
+                SceneManager.LoadScene("Level1");
+            }
+        }
+
+    }
+
+        public void LoseLife()
     {
         currentLives--;
         UpdateLivesUI();
 
-        if(currentLives <= 1)
+        if(currentLives == 0)
         {
             GameOver();
         }
@@ -57,6 +79,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {        
         Debug.Log("Game Over");
+        SceneManager.LoadScene("GameOver");
     }
 
     public void AddHitScore()
@@ -65,29 +88,48 @@ public class GameManager : MonoBehaviour
         UpdateScoreUI();
     }
 
-    public void AddDestroyScore()
-    {
-        score += 100;  // Adds 100 points when destroying a block
-        UpdateScoreUI();
-    }
+   
 
     // Updates the score display in the UI
     private void UpdateScoreUI()
     {
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = "Score: " + score;
     }
     public void BlockDestroyed()
     {
-        blockCount--;
-        if(blockCount <= 0)
-        {
-            LoadNextLevel();
-        }
+        score += 100;  
+        UpdateScoreUI();
+        Debug.Log("block destroy");
+      
     }
 
+    private IEnumerator CheckForBlocks()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(checkDelay);
+
+            // Find all GameObjects with the specified tag
+            GameObject[] blocks = GameObject.FindGameObjectsWithTag(blockTag);
+
+            // If no blocks are found, load the next scene
+            if (blocks.Length == 0)
+            {
+                LoadNextLevel();
+                
+            }
+        }
+    }
+    
+    
     public void LoadNextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        int nextSceneIndex = (currentSceneIndex + 1) % SceneManager.sceneCountInBuildSettings;
+
+        // Load the next scene
+        SceneManager.LoadScene(nextSceneIndex);
     }
 
 }

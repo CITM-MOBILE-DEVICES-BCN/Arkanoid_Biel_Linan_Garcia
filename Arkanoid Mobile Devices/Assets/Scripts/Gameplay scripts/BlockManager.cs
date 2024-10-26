@@ -53,7 +53,7 @@ public class BlockManager : MonoBehaviour
         }
         else if (hitsRemaining <= 0)
         {
-            scoreManager.AddDestroyScore();
+            scoreManager.BlockDestroyed();
             Destroy(gameObject);
         }
     }
