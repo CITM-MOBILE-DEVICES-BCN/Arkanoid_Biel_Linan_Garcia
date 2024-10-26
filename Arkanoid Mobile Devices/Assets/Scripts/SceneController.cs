@@ -109,7 +109,7 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("Level1");
 
     }
-    public void loadNextlvl()
+    public void LoadNextlvl()
     {
         if (SceneManager.GetActiveScene().name == "Level2")
         {

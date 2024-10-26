@@ -115,8 +115,8 @@ public class GameManager : MonoBehaviour
             // If no blocks are found, load the next scene
             if (blocks.Length == 0 && SceneManager.GetActiveScene().name == "Level1" || blocks.Length == 0 && SceneManager.GetActiveScene().name == "Level2")
             {
-                Debug.Log("wasaa");
-                sceneController.loadNextlvl();
+                
+                sceneController.LoadNextlvl();
                 
             }
         }
